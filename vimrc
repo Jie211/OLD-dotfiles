@@ -1,0 +1,567 @@
+"release autogroup in MyAutoCmd
+augroup MyAutoCmd
+  autocmd!
+augroup END
+"######################
+"encode
+"######################
+set enc=utf-8
+set helplang=ja
+set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp,default,latin
+" let mapleader=","
+" ------------------------------------
+"  " colorscheme
+"  " ------------------------------------
+syntax on
+colorscheme badwolf
+highlight Normal ctermbg=none
+"######################
+"folding
+"######################
+set foldmethod=syntax
+let c_no_comment_fold=1
+
+"######################
+"display
+"######################
+set number "line number
+let &titleold=expand("%:p:h")
+set title
+set showmode
+set title
+set ruler
+set showcmd
+set matchtime=3
+set laststatus=2
+set background=dark
+
+"######################
+"for Programming
+"######################
+set infercase "補完時に大文字小文字を区別しない
+" set hidden "バッファを閉じる代わりに隠すUndo履歴を残す
+set backspace=indent,eol,start
+set nocompatible
+set smartindent
+set autoindent
+set expandtab
+set tabstop=2
+set shiftwidth=2 "自動インデントでずれる幅
+set softtabstop=2
+set whichwrap=b,s,h,l,<,>,[,] "行頭行末の左右移動で行をまたぐ
+set scrolloff=8                "上下8行の視界を確保
+set sidescrolloff=16           " 左右スクロール時の視界を確保
+set sidescroll=1               " 左右スクロールは一文字づつ行う
+set cursorline     " カーソル行の背景色を変える
+"set cursorcolumn   " カーソル位置のカラムの背景色を変える
+set showmatch      " 対応する括弧を強調表示
+set matchtime=3
+set list           " 不可視文字を表示
+" 前時代的スクリーンベルを無効化
+set t_vb=
+set novisualbell
+" 不可視文字の表示記号指定
+" set listchars=tab:▸\ ,eol:↲,extends:❯,precedes:❮
+set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%,eol:↲
+set confirm "保存されていないファイルがあるときは終了前に保存確認
+set hlsearch "検索文字列をハイライトする
+set ignorecase "大文字と小文字を区別しない
+set smartcase "大文字と小文字が混在した言葉で検索を行った場合に限り、大文字と小文字を区別する
+set wrapscan "最後尾まで検索を終えたら次の検索で先頭に移る
+set wildmenu wildmode=list:longest,full
+
+"######################
+"for BeoBundle
+"######################
+
+" NeoBundle がインストールされていない時、
+" もしくは、プラグインの初期化に失敗した時の処理
+function! s:WithoutBundles()
+  " colorscheme default
+  " colorscheme badwolf
+  " その他の処理
+endfunction
+
+" NeoBundle よるプラグインのロードと各プラグインの初期化
+function! s:LoadBundles()
+  call neobundle#begin(expand('~/.vim/bundle/'))
+  " 読み込むプラグインの指定
+  NeoBundle 'Shougo/neobundle.vim'
+  NeoBundle 'Shougo/neocomplete'
+  NeoBundle "thinca/vim-template"
+  NeoBundle 'Shougo/neosnippet'
+  NeoBundle 'Shougo/neosnippet-snippets'
+  NeoBundle "thinca/vim-quickrun"
+  NeoBundle "osyo-manga/unite-quickfix"
+  NeoBundle "osyo-manga/shabadou.vim"
+  NeoBundle "Shougo/unite.vim"
+  NeoBundle 'osyo-manga/vim-cpp-syntax-reserved_identifiers'
+  NeoBundle 'osyo-manga/vim-over'
+  "submode pane 移動"
+  NeoBundle "kana/vim-submode"
+  NeoBundle "mbbill/undotree"
+  NeoBundle "osyo-manga/unite-quickrun_config"
+  "checker"
+  NeoBundle 'scrooloose/syntastic'
+  "commet"
+  NeoBundle 'tomtom/tcomment_vim.git'
+  "laatex"
+  NeoBundle 'vim-scripts/bufferlist.vim'
+  NeoBundle 'itchyny/lightline.vim'
+  NeoBundle 'Yggdroot/indentLine'
+  NeoBundle 'mrtazz/DoxygenToolkit.vim'
+  NeoBundle 'vim-scripts/bufferlist.vim'
+  NeoBundle 'bling/vim-bufferline'
+  NeoBundle 'scrooloose/nerdtree'
+  NeoBundle 'Yggdroot/indentLine'
+  " NeoBundle 'Townk/vim-autoclose'
+  NeoBundle "ujihisa/unite-colorscheme"
+
+  NeoBundle 'Shougo/vimproc.vim', {
+        \ 'build' : {
+        \     'windows' : 'tools\\update-dll-mingw',
+        \     'cygwin' : 'make -f make_cygwin.mak',
+        \     'mac' : 'make -f make_mac.mak',
+        \     'linux' : 'make',
+        \     'unix' : 'gmake',
+        \    },
+        \ }
+
+  NeoBundleLazy "vim-scripts/TaskList.vim", {
+        \ "autoload": {
+        \   "mappings": ['<Plug>TaskList'],
+        \}}
+
+  NeoBundleLazy "sjl/gundo.vim", {
+        \ "autoload": {
+        \   "commands": ['GundoToggle'],
+        \}}
+
+  NeoBundleLazy 'Shougo/neocomplete.vim', {
+        \ "autoload": {"insert": 1}}
+
+  
+  NeoBundleLazy 'Shougo/neosnippet.vim', {
+        \ "autoload": {"insert": 1}}
+  NeoBundleLazy 'sjl/gundo.vim', {
+        \ "autoload": {"commands": ["GundoToggle"]}}
+  NeoBundleLazy 'vim-scripts/TaskList.vim', {
+        \ "autoload": {"mappings": ['<Plug>TaskList']}}
+  NeoBundle "vitalk/vim-simple-todo"
+  NeoBundle "sjl/badwolf"
+  NeoBundle "cohama/lexima.vim"
+
+
+
+
+  " 読み込んだプラグインの設定
+  " ...
+  call neobundle#end()
+endfunction
+
+" NeoBundle がインストールされているなら LoadBundles() を呼び出す
+" そうでないなら WithoutBundles() を呼び出す
+function! s:InitNeoBundle()
+  if isdirectory(expand("~/.vim/bundle/neobundle.vim/"))
+    filetype plugin indent off
+    if has('vim_starting')
+      set runtimepath+=~/.vim/bundle/neobundle.vim/
+    endif
+    try
+      call neobundle#begin(expand('~/.vim/bundle/'))
+      NeoBundleFetch 'Shougo/neobundle.vim'
+      call neobundle#end()
+      call s:LoadBundles()
+    catch
+      call s:WithoutBundles()
+    endtry
+  else
+    call s:WithoutBundles()
+  endif
+
+  filetype indent plugin on
+  syntax on
+endfunction
+
+call s:InitNeoBundle()
+
+
+"######################
+"for neocomplete
+"######################
+let s:hooks = neobundle#get_hooks("neocomplete.vim")
+  function! s:hooks.on_source(bundle)
+    let g:acp_enableAtStartup = 0
+    let g:neocomplete#enable_smart_case = 1
+    NeoCompleteEnable
+  endfunction
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+      \ 'default' : '',
+      \ 'vimshell' : $HOME.'/.vimshell_hist',
+      \ 'scheme' : $HOME.'/.gosh_completions'
+      \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+  let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplete#close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+"inoremap <expr><S-Tab> pumvisible() ? "\<Up>" : "\<C-Tab>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplete#close_popup()
+inoremap <expr><C-e>  neocomplete#cancel_popup()
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+"######################
+"for neosnippet
+"######################
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+" SuperTab like snippets behavior.
+imap <expr><S-TAB> neosnippet#expandable_or_jumpable() ?
+      \ "\<Plug>(neosnippet_expand_or_jump)"
+      \: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><S-TAB> neosnippet#expandable_or_jumpable() ?
+      \ "\<Plug>(neosnippet_expand_or_jump)"
+      \: "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
+"#######################
+"for quickrun quickrunex
+"######################
+" runner を vimproc に設定
+" 更新時間も設定しておく
+" updatetimeの値が大きいと更新のタイミングが遅れる場合があるので
+" あまり大きい数値は設定しない方がよいです。
+
+let g:quickrun_config = {
+      \       "_" : {
+      \           "hook/close_unite_quickfix/enable_hook_loaded" : 1,
+      \           "hook/unite_quickfix/enable_failure" : 1,
+      \           "hook/close_quickfix/enable_exit" : 1,
+      \           "hook/close_buffer/enable_failure" : 1,
+      \           "hook/close_buffer/enable_empty_data" : 1,
+      \           "outputter" : "multi:buffer:quickfix",
+      \           "outputter/buffer/split" : ":botright 8sp",
+      \           "runner" : "vimproc",
+      \           "runner/vimproc/updatetime" : 40
+      \       }
+      \}
+let g:quickrun_config["java"] = {
+      \ 'exec' : ['javac -J-Dfile.encoding=UTF8 %o %s', '%c -Dfile.encoding=UTF8 %s:t:r %a']
+      \}
+let g:quickrun_config["c"] = {
+      \       'type': 'c/gcc',
+      \       'command': 'clang',
+      \       'exec': ['%c %o %s -o %s:p:r', '%s:p:r %a'],
+      \       'tempfile': '%{tempname()}.c',
+      \       'hook/sweep/files': '%S:p:r',
+      \       'cmdopt': '-std=c99 -Wall'
+      \}
+"#######################
+"　移動コマンドremap
+"######################
+nnoremap s <Nop>
+nnoremap sj <C-w>j
+nnoremap sk <C-w>k
+nnoremap sl <C-w>l
+nnoremap sh <C-w>h
+nnoremap sJ <C-w>J
+nnoremap sK <C-w>K
+nnoremap sL <C-w>L
+nnoremap sH <C-w>H
+nnoremap sn gt
+nnoremap sp gT
+nnoremap sr <C-w>r
+nnoremap s= <C-w>=
+nnoremap sw <C-w>w
+nnoremap so <C-w>_<C-w>|
+nnoremap sO <C-w>=
+nnoremap sN :<C-u>bn<CR>
+nnoremap sP :<C-u>bp<CR>
+nnoremap st :<C-u>tabnew<CR>
+nnoremap sT :<C-u>Unite tab<CR>
+nnoremap ss :<C-u>sp<CR>
+nnoremap sv :<C-u>vs<CR>
+nnoremap sq :<C-u>q<CR>
+nnoremap sQ :<C-u>bd<CR>
+nnoremap sb :<C-u>Unite buffer_tab -buffer-name=file<CR>
+nnoremap sB :<C-u>Unite buffer -buffer-name=file<CR>
+
+call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
+call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
+call submode#enter_with('bufmove', 'n', '', 's+', '<C-w>+')
+call submode#enter_with('bufmove', 'n', '', 's-', '<C-w>-')
+call submode#map('bufmove', 'n', '', '>', '<C-w>>')
+call submode#map('bufmove', 'n', '', '<', '<C-w><')
+call submode#map('bufmove', 'n', '', '+', '<C-w>+')
+call submode#map('bufmove', 'n', '', '-', '<C-w>-')
+
+
+"######################
+" 全角スペースの表示
+"######################
+function! ZenkakuSpace()
+  highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
+endfunction
+
+if has('syntax')
+  augroup ZenkakuSpace
+    autocmd!
+    autocmd ColorScheme * call ZenkakuSpace()
+    autocmd VimEnter,WinEnter,BufRead * let w:m1=matchadd('ZenkakuSpace', '　')
+  augroup END
+  call ZenkakuSpace()
+endif
+
+
+" ##########################
+" 前回編集していた場所にカーソルを移動させる
+"######################
+au BufWritePost * mkview
+autocmd BufReadPost * loadview
+
+"######################
+" 挿入モード時、ステータスラインの色を変更
+"######################
+let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
+
+if has('syntax')
+  augroup InsertHook
+    autocmd!
+    autocmd InsertEnter * call s:StatusLine('Enter')
+    autocmd InsertLeave * call s:StatusLine('Leave')
+  augroup END
+endif
+
+let s:slhlcmd = ''
+function! s:StatusLine(mode)
+  if a:mode == 'Enter'
+    silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
+    silent exec g:hi_insert
+  else
+    highlight clear StatusLine
+    silent exec s:slhlcmd
+  endif
+endfunction
+
+function! s:GetHighlight(hi)
+  redir => hl
+  exec 'highlight '.a:hi
+  redir END
+  let hl = substitute(hl, '[\r\n]', '', 'g')
+  let hl = substitute(hl, 'xxx', '', '')
+  return hl
+endfunction
+
+
+"######################
+"syntastic 設定
+"######################
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=2
+" C
+let g:syntastic_c_check_header = 1
+" C++
+let g:syntastic_cpp_check_header = 1
+" Java
+let g:syntastic_java_javac_config_file_enabled = 1
+
+"########################
+"# undotree
+"########################
+nmap <Leader>u :UndotreeToggle<CR>
+let g:undotree_SetFocusWhenToggle = 1
+let g:undotree_WindowLayout = 'topleft'
+let g:undotree_SplitWidth = 35
+let g:undotree_diffAutoOpen = 1
+let g:undotree_diffpanelHeight = 25
+let g:undotree_RelativeTimestamp = 1
+let g:undotree_TreeNodeShape = '*'
+let g:undotree_HighlightChangedText = 1
+let g:undotree_HighlightSyntax = "UnderLined"
+
+"##########################
+"CR x2 = nohlsearch"
+"###################"
+"Escの2回押しでハイライト消去
+nnoremap <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
+
+"タブ、空白、改行の可視化
+set list
+set listchars=tab:>.,trail:_,eol:↲,extends:>,precedes:<,nbsp:%
+
+"全角スペースをハイライト表示
+function! ZenkakuSpace()
+  highlight ZenkakuSpace cterm=reverse ctermfg=DarkMagenta gui=reverse guifg=DarkMagenta
+endfunction
+
+if has('syntax')
+  augroup ZenkakuSpace
+    autocmd!
+    autocmd ColorScheme       * call ZenkakuSpace()
+    autocmd VimEnter,WinEnter * match ZenkakuSpace /　/
+  augroup END
+  call ZenkakuSpace()
+endif
+
+"#NERDTree
+map <silent> <C-F> :NERDTreeToggle<CR>
+
+"#indentLine
+let g:indentLine_faster = 1
+
+"----------------------------------------------------
+" Insert include guard to the current file
+"----------------------------------------------------
+command!  -nargs=0 IncGuard call IncludeGuard()
+function! IncludeGuard()
+  "カレントファイル名を取得
+  let name = fnamemodify(expand('%'),':t')
+
+  "大文字にする
+  let name = toupper(name)
+
+  "がーど
+  let included = substitute(name,'\.','_','g').'_INCLUDED__'
+
+  "書き込み
+  let res_head = '#ifndef '.included."\n#define ".included."\n\n"
+  let res_foot = "\n".'#endif //'.included."\n"
+  silent! execute '1s/^/\=res_head'
+  silent! execute '$s/$/\=res_foot'
+endfunction
+
+"-----------------------------------------------------
+"DoxygenToolkit
+"-----------------------------------------------------
+let g:DoxygenToolkit_briefTag_pre="@Synopsis  "
+let g:DoxygenToolkit_paramTag_pre="@Param "
+let g:DoxygenToolkit_returnTag="@Returns   "
+let g:DoxygenToolkit_blockHeader="-------------------------------"
+let g:DoxygenToolkit_blockFooter="---------------------------------"
+let g:DoxygenToolkit_authorName="Gong Chen <jie211.jp@gmail.com>"
+let g:DoxygenToolkit_licenseTag="This is free and unencumbered code released into the public domain."
+let g:DoxygenToolkit_briefTag_funcName="yes"
+let g:doxygen_enhanced_color=1
+
+
+"++++++++++++++++++++++++++++++++++
+"lightline
+"++++++++++++++++++++++++++++++++++
+let g:lightline  =  {
+      \ 'colorscheme': 'landscape',
+      \ }
+
+"-------------------------------------
+"vim-over
+"____________________________________
+nnoremap <silent> <Leader>m :OverCommandLine<CR>
+"---------------------------
+"nohlsearch
+"-------------------------
+nmap <silent> <Esc><Esc> :nohlsearch<CR>
+"-----------------------
+"unite
+"----------------------
+nnoremap    [unite]   <Nop>
+nmap    <Leader>f [unite]
+
+nnoremap [unite]u  :<C-u>Unite -no-split<Space>
+" nnoremap <silent> [unite]f :<C-u>Unite<Space>buffer<CR>
+nnoremap <silent> [unite]b :<C-u>Unite<Space>bookmark<CR>
+nnoremap <silent> [unite]f :<C-u>Unite<Space>file<CR>
+nnoremap <silent> [unite]m :<C-u>Unite<Space>file_mru<CR>
+" nnoremap <silent> [unite]o :<C-u>Unite<Space>outline<CR>
+" nnoremap <silent> [unite]r :<C-u>UniteWithBufferDir file<CR>
+nnoremap <silent> ,vr :UniteResume<CR>
+let g:vinarise_enable_auto_detect = 1
+
+nnoremap <silent> ,vb :Unite build<CR>
+nnoremap <silent> ,vcb :Unite build:!<CR>
+nnoremap <silent> ,vch :UniteBuildClearHighlight<CR>
+"-------------------------
+"vim-template
+"------------------------
+" テンプレート中に含まれる特定文字列を置き換える
+autocmd MyAutoCmd User plugin-template-loaded call s:template_keywords()
+function! s:template_keywords()
+  silent! %s/<+DATE+>/\=strftime('%Y-%m-%d')/g
+  silent! %s/<+FILENAME+>/\=expand('%:r')/g
+endfunction
+" テンプレート中に含まれる'<+CURSOR+>'にカーソルを移動
+autocmd MyAutoCmd User plugin-template-loaded
+      \   if search('<+CURSOR+>')
+      \ |   silent! execute 'normal! "_da>'
+      \ | endif
+"----------------
+"buffer list
+"-----------------
+map <silent> <C-b> :call BufferList()<CR>
+"------------------
+"gundo
+"------------------
+nnoremap <Leader>g :GundoToggle<CR>
+"-----------------
+"tasklist
+"-----------------
+nmap <Leader>T <plug>TaskList
+"--------------
+"quick run
+"--------------
+nmap <Leader>r <Plug>(quickrun)
+" nnoremap <buffer> <silent> <Leader>r :<C-u>QuickRun
+"
+"-----------
+"lexima
+"-----------
+call lexima#add_rule({'at': '\%#.*[-0-9a-zA-Z_,:]', 'char': '{', 'input': '{'})
+call lexima#add_rule({'at': '\%#\n\s*}', 'char': '}', 'input': '}', 'delete': '}'})
