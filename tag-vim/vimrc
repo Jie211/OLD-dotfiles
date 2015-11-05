@@ -150,6 +150,8 @@ function! s:LoadBundles()
   NeoBundle "vitalk/vim-simple-todo"
   NeoBundle "sjl/badwolf"
   NeoBundle "cohama/lexima.vim"
+  NeoBundle "Shougo/vimshell.vim"
+  NeoBundle "itchyny/calendar.vim"
 
 
 
@@ -328,13 +330,13 @@ nnoremap sO <C-w>=
 nnoremap sN :<C-u>bn<CR>
 nnoremap sP :<C-u>bp<CR>
 nnoremap st :<C-u>tabnew<CR>
-nnoremap sT :<C-u>Unite tab<CR>
+" nnoremap sT :<C-u>Unite tab<CR>
 nnoremap ss :<C-u>sp<CR>
 nnoremap sv :<C-u>vs<CR>
 nnoremap sq :<C-u>q<CR>
 nnoremap sQ :<C-u>bd<CR>
-nnoremap sb :<C-u>Unite buffer_tab -buffer-name=file<CR>
-nnoremap sB :<C-u>Unite buffer -buffer-name=file<CR>
+" nnoremap sb :<C-u>Unite buffer_tab -buffer-name=file<CR>
+" nnoremap sB :<C-u>Unite buffer -buffer-name=file<CR>
 
 call submode#enter_with('bufmove', 'n', '', 's>', '<C-w>>')
 call submode#enter_with('bufmove', 'n', '', 's<', '<C-w><')
@@ -497,10 +499,29 @@ let g:doxygen_enhanced_color=1
 "++++++++++++++++++++++++++++++++++
 "lightline
 "++++++++++++++++++++++++++++++++++
-let g:lightline  =  {
-      \ 'colorscheme': 'landscape',
+let g:lightline = {
+      \ 'colorscheme':'solarized',
+      \ 'active': {
+      \   'right': [ [ 'syntastic', 'lineinfo' ],
+      \              [ 'percent' ],
+      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \ },
+      \ 'component_expand': {
+      \   'syntastic': 'SyntasticStatuslineFlag',
+      \ },
+      \ 'component_type': {
+      \   'syntastic': 'error',
       \ }
-
+      \ }
+let g:syntastic_mode_map = { 'mode': 'passive' }
+augroup AutoSyntastic
+  autocmd!
+  autocmd BufWritePost *.c,*.cpp call s:syntastic()
+augroup END
+function! s:syntastic()
+  SyntasticCheck
+  call lightline#update()
+endfunction
 "-------------------------------------
 "vim-over
 "____________________________________
@@ -565,3 +586,12 @@ nmap <Leader>r <Plug>(quickrun)
 "-----------
 call lexima#add_rule({'at': '\%#.*[-0-9a-zA-Z_,:]', 'char': '{', 'input': '{'})
 call lexima#add_rule({'at': '\%#\n\s*}', 'char': '}', 'input': '}', 'delete': '}'})
+"===============
+"vim shell
+"==============
+let g:vimshell_prompt_expr = 'getcwd()." > "'
+let g:vimshell_prompt_pattern = '^\f\+ > '
+"---------------
+"calendar
+"---------------
+let g:calendar_google_calendar = 1
