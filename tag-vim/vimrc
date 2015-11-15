@@ -602,5 +602,4 @@ let g:calendar_google_calendar = 1
 "---------------
 let g:auto_ctags=1
 let g:auto_ctags_tags_args = '--tag-relative --recurse --sort=yes'
-let g:auto_ctags_filetype_mode = 1
-
+" let g:auto_ctags_filetype_mode = 1
