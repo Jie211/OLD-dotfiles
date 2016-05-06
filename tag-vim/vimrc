@@ -140,7 +140,7 @@ function! s:LoadBundles()
   NeoBundleLazy 'Shougo/neocomplete.vim', {
         \ "autoload": {"insert": 1}}
 
-  
+
   NeoBundleLazy 'Shougo/neosnippet.vim', {
         \ "autoload": {"insert": 1}}
   NeoBundleLazy 'sjl/gundo.vim', {
@@ -152,11 +152,9 @@ function! s:LoadBundles()
   NeoBundle "cohama/lexima.vim"
   NeoBundle "Shougo/vimshell.vim"
   NeoBundle "itchyny/calendar.vim"
-  NeoBundle 'soramugi/auto-ctags.vim'
   NeoBundle 'NLKNguyen/papercolor-theme'
-
-
-
+  NeoBundle 'kannokanno/previm'
+  NeoBundle 'tyru/open-browser.vim'
 
   " 読み込んだプラグインの設定
   " ...
@@ -418,6 +416,8 @@ let g:syntastic_c_check_header = 1
 let g:syntastic_cpp_check_header = 1
 " Java
 let g:syntastic_java_javac_config_file_enabled = 1
+" python
+let g:syntastic_python_checkers = ['pyflakes', 'pep8']
 
 "########################
 "# undotree
@@ -518,7 +518,7 @@ let g:lightline = {
 let g:syntastic_mode_map = { 'mode': 'passive' }
 augroup AutoSyntastic
   autocmd!
-  autocmd BufWritePost *.c,*.cpp call s:syntastic()
+  autocmd BufWritePost *.py,*.c,*.cpp call s:syntastic()
 augroup END
 function! s:syntastic()
   SyntasticCheck
@@ -597,10 +597,30 @@ let g:vimshell_prompt_pattern = '^\f\+ > '
 "calendar
 "---------------
 let g:calendar_google_calendar = 1
+"--------------
+"markdown
+"--------------
+au BufRead,BufNewFile *.md set filetype=markdown
+let g:previm_open_cmd = 'open -a safari'
 "---------------
-"auto-ctags
+"autopep8
 "---------------
-let g:auto_ctags=1
-let g:auto_ctags_tags_args = '--tag-relative --recurse --sort=yes'
-let g:auto_ctags_filetype_mode = 1
+function! Preserve(command)
+  let search = @/
+  let cursor_position = getpos('.')
+  normal! H
+  let window_position = getpos('.')
+  call setpos('.', cursor_position)
+  execute a:command
+  let @/ = search
+  call setpos('.', window_position)
+  normal! zt
+  call setpos('.', cursor_position)
+endfunction
+
+function! Autopep8()
+  call Preserve(':silent %!autopep8 -')
+endfunction
+
+autocmd FileType python nnoremap <C-f> :call Autopep8()<CR>
 
