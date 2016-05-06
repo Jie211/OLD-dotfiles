@@ -605,7 +605,6 @@ let g:previm_open_cmd = 'open -a safari'
 "---------------
 "autopep8
 "---------------
-<<<<<<< HEAD
 function! Preserve(command)
   let search = @/
   let cursor_position = getpos('.')
@@ -624,9 +623,3 @@ function! Autopep8()
 endfunction
 
 autocmd FileType python nnoremap <C-f> :call Autopep8()<CR>
-
-=======
-let g:auto_ctags=1
-let g:auto_ctags_tags_args = '--tag-relative --recurse --sort=yes'
-" let g:auto_ctags_filetype_mode = 1
->>>>>>> ffba926a4dad0ec1b64a63242a1ee5fcf28ffa91
