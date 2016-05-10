@@ -1,20 +1,28 @@
-# ge
+# first of all
 export TERM="xterm-256color"
-# setopt prompt_subst
+setopt prompt_subst
 alias ..="cd .."
+autoload -Uz compinit;
+compinit -u
+alias tmux='TERM=screen-256color-bce tmux'
 
 # zplug
 source ~/.zplug/init.zsh
-zplug "robbyrussell/oh-my-zsh"
-zplug "adambiggs/zsh-theme", use:adambiggs.zsh-theme
-zplug "zsh-users/zsh-syntax-highlighting", nice:10
-zplug "zsh-users/zsh-history-substring-search"
-zplug "mrowa44/emojify", as:command
-zplug "zsh-users/zsh-completions"
+zplug "plugins/command-not-found", from:oh-my-zsh
+zplug "plugins/git", from:oh-my-zsh, if:"(( $+commands[git] ))"
+zplug "plugins/pip", from:oh-my-zsh
+
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
+
 zplug "zlsun/solarized-man"
 
+zplug "zsh-users/zsh-syntax-highlighting", nice:18
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-autosuggestions", nice:10
+zplug "zsh-users/zsh-history-substring-search", nice:19
+
+zplug "themes/agnoster", from:oh-my-zsh
 
 if ! zplug check --verbose; then
   printf "Install? [y/N]: "
@@ -22,7 +30,6 @@ if ! zplug check --verbose; then
     echo; zplug install
   fi
 fi
-# zplug load --verbose
 
 # linuxbrew
 export PATH="$HOME/.linuxbrew/bin:$PATH"
@@ -32,4 +39,38 @@ export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
 # vim
 alias vi=~/.linuxbrew/Cellar/vim/7.4.1795/bin/vim
 alias vim=~/.linuxbrew/Cellar/vim/7.4.1795/bin/vim
+
+### AUTOSUGGESTIONS ###
+if zplug check zsh-users/zsh-autosuggestions; then
+  ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-substring-search-up history-substring-search-down)
+  ZSH_AUTOSUGGEST_CLEAR_WIDGETS=("${(@)ZSH_AUTOSUGGEST_CLEAR_WIDGETS:#(up|down)-line-or-history}")
+fi
+
+#fzf
+export FZF_COMPLETION_TRIGGER='~~'
+
+_fzf_compgen_path() {
+  ag -g "" "$1"
+}
+
+fe() {
+  local file
+  file=$(fzf --query="$1" --select-1 --exit-0)
+  [ -n "$file" ] && ${EDITOR:-vim} "$file"
+}
+
+fd() {
+  local dir
+  dir=$(find ${1:-*} -path '*/\.*' -prune \
+    -o -type d -print 2> /dev/null | fzf +m) &&
+    cd "$dir"
+}
+
+fh() {
+  eval $(([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s | sed 's/ *[0-9]* *//')
+}
+
+fkill() {
+  ps -ef | sed 1d | fzf -m | awk '{print $2}' | xargs kill -${1:-9}
+}
 
