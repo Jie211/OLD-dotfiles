@@ -1,0 +1,35 @@
+# ge
+export TERM="xterm-256color"
+# setopt prompt_subst
+alias ..="cd .."
+
+# zplug
+source ~/.zplug/init.zsh
+zplug "robbyrussell/oh-my-zsh"
+zplug "adambiggs/zsh-theme", use:adambiggs.zsh-theme
+zplug "zsh-users/zsh-syntax-highlighting", nice:10
+zplug "zsh-users/zsh-history-substring-search"
+zplug "mrowa44/emojify", as:command
+zplug "zsh-users/zsh-completions"
+zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
+zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
+zplug "zlsun/solarized-man"
+
+
+if ! zplug check --verbose; then
+  printf "Install? [y/N]: "
+  if read -q; then
+    echo; zplug install
+  fi
+fi
+# zplug load --verbose
+
+# linuxbrew
+export PATH="$HOME/.linuxbrew/bin:$PATH"
+export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
+export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
+
+# vim
+alias vi=~/.linuxbrew/Cellar/vim/7.4.1795/bin/vim
+alias vim=~/.linuxbrew/Cellar/vim/7.4.1795/bin/vim
+
