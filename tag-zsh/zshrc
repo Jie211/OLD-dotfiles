@@ -1,50 +1,29 @@
 # first of all
+source "${HOME}/.zgen/zgen.zsh"
+if ! zgen saved; then
+  zgen oh-my-zsh
+  zgen oh-my-zsh plugins/git
+  zgen oh-my-zsh plugins/sudo
+  zgen oh-my-zsh plugins/command-not-found
+  zgen load zsh-users/zsh-completions
+  zgen load zsh-users/zsh-history-substring-search
+  zgen load jimmijj/zsh-syntax-highlighting
+  zgen load tarruda/zsh-autosuggestions
+  zgen load djui/alias-tips
+  zgen load caiogondim/bullet-train-oh-my-zsh-theme bullet-train
+
+  zgen save
+fi
+
+alias vi="vim"
 export TERM="xterm-256color"
 setopt prompt_subst
 alias ..="cd .."
 autoload -Uz compinit;
 compinit -u
 alias tmux='TERM=screen-256color-bce tmux'
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 
-# zplug
-source ~/.zplug/init.zsh
-zplug "plugins/command-not-found", from:oh-my-zsh
-zplug "plugins/git", from:oh-my-zsh, if:"(( $+commands[git] ))"
-zplug "plugins/pip", from:oh-my-zsh
-
-zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
-zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
-
-zplug "zlsun/solarized-man"
-
-zplug "zsh-users/zsh-syntax-highlighting", nice:18
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-autosuggestions", nice:10
-zplug "zsh-users/zsh-history-substring-search", nice:19
-
-zplug "themes/agnoster", from:oh-my-zsh
-
-if ! zplug check --verbose; then
-  printf "Install? [y/N]: "
-  if read -q; then
-    echo; zplug install
-  fi
-fi
-
-# linuxbrew
-export PATH="$HOME/.linuxbrew/bin:$PATH"
-export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
-export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
-
-# vim
-alias vi=~/.linuxbrew/Cellar/vim/7.4.1795/bin/vim
-alias vim=~/.linuxbrew/Cellar/vim/7.4.1795/bin/vim
-
-### AUTOSUGGESTIONS ###
-if zplug check zsh-users/zsh-autosuggestions; then
-  ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=(history-substring-search-up history-substring-search-down)
-  ZSH_AUTOSUGGEST_CLEAR_WIDGETS=("${(@)ZSH_AUTOSUGGEST_CLEAR_WIDGETS:#(up|down)-line-or-history}")
-fi
 
 #fzf
 export FZF_COMPLETION_TRIGGER='~~'
@@ -74,3 +53,10 @@ fkill() {
   ps -ef | sed 1d | fzf -m | awk '{print $2}' | xargs kill -${1:-9}
 }
 
+# python
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+export PYENV_ROOT=/usr/local/var/pyenv
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
